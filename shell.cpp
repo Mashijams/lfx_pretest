@@ -18,8 +18,7 @@
 
 void _ArgumentFormat() {
 	printf("./shell [version] [run] [wasm path] [arguments]\n");
-	printf("Supported wasm applications are : add.wasm | factorial.wasm
-		| fibonaci.wasm | hello.wasm\n");
+	printf("Supported wasm applications are : add.wasm | factorial.wasm | fibonaci.wasm\n");
 }
 
 
@@ -52,6 +51,8 @@ int main (int argc, char* argv[]) {
 		return EXIT_SUCCESS;
 	}
 
+	_setup_app_hash_map();
+
 	// index in arguments where wasmapp path exits
 	uint8_t index = 1;
 
@@ -65,7 +66,7 @@ int main (int argc, char* argv[]) {
 
 	// Something wrong happend instance is not created
 	if (app == NULL) {
-		fprintf(stderr, "Invalid or Unsupported Wasm Application");
+		fprintf(stderr, "Invalid or Unsupported Wasm Application\n");
 		_ArgumentFormat();
 		return EXIT_FAILURE;
 	}
@@ -75,7 +76,7 @@ int main (int argc, char* argv[]) {
 	delete app;
 
 	if (status != APP_SUCCESS) {
-		fprintf(stderr, "Invalid arguments");
+		fprintf(stderr, "Invalid arguments\n");
 		_ArgumentFormat();
 		return EXIT_FAILURE;
 	}

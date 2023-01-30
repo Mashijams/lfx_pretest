@@ -14,6 +14,7 @@
 #include <wasmedge/wasmedge.h>
 #include <iostream>
 #include <string>
+#include <map>
 
 
 // an enum for success or failure of methods in shell
@@ -32,10 +33,6 @@ enum Apps {
 };
 
 
-// Map for storing shell app hash
-std::map<std::string, Apps> app_hash;
-
-
 void
 _setup_app_hash_map();
 
@@ -50,7 +47,7 @@ public:
 
 
 // Add wasm application class
-class Add : public : WasmApp {
+class Add : public WasmApp {
 public:
 							Add();
 							~Add();
@@ -59,19 +56,19 @@ public:
 
 
 // fibonaci wasm application class
-class Fibonaci : public : WasmApp {
+class Fibonaci : public WasmApp {
 public:
-							Add();
-							~Add();
+							Fibonaci();
+							~Fibonaci();
 		status_t			Run(int argc, char* argv[]);
 };
 
 
 // factorial wasm application class
-class Factorial : public : WasmApp {
+class Factorial : public WasmApp {
 public:
-							Add();
-							~Add();
+							Factorial();
+							~Factorial();
 		status_t			Run(int argc, char* argv[]);
 };
 

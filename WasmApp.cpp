@@ -10,6 +10,10 @@
 #include "WasmApp.h"
 
 
+// Map for storing shell app hash
+std::map<std::string, Apps> app_hash;
+
+
 void
 _setup_app_hash_map()
 {
@@ -27,8 +31,8 @@ WasmApp::~WasmApp()
 WasmApp*
 WasmApp::Create(char* argv)
 {
-	uint32 len = sizeof(argv);
-	string str = ""; // empty string
+	uint32_t len = sizeof(argv);
+	std::string str = ""; // empty string
 	int i;
 
 	// check if file ends with .wasm
@@ -51,7 +55,7 @@ WasmApp::Create(char* argv)
 	Apps c;
 
 	if (app_hash.find(str) != app_hash.end())
-		c = command_hash[str];
+		c = app_hash[str];
 	else
 		c = UNKNOWN;
 
@@ -103,8 +107,8 @@ Add::Run(int argc, char* argv[])
 	// Extract the arguements.
 	char app_path[strlen(argv[0])];
 	strcpy(app_path, argv[0]);
-	int param1 = stoi(argv[1]);
-	int param2 = stoi(argv[2]);
+	int param1 = atoi(argv[1]);
+	int param2 = atoi(argv[2]);
 
 	// Create the configure context and add the WASI support.
 	// This step is not necessary unless you need WASI support.
@@ -119,7 +123,7 @@ Add::Run(int argc, char* argv[])
 	// Function name.
 	WasmEdge_String FuncName = WasmEdge_StringCreateByCString("add");
 	// Run the WASM function from file.
-	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, file_path, FuncName, Params, 2, Returns, 1);
+	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, app_path, FuncName, Params, 2, Returns, 1);
 
 	if (WasmEdge_ResultOK(Res)) {
 		printf("Addition of %d and %d is: %d\n", param1, param2, WasmEdge_ValueGetI32(Returns[0]));
@@ -158,7 +162,7 @@ Factorial::Run(int argc, char* argv[])
 	// Extract the arguements.
 	char app_path[strlen(argv[0])];
 	strcpy(app_path, argv[0]);
-	int param1 = stoi(argv[1]);
+	int param1 = atoi(argv[1]);
 
 	// Create the configure context and add the WASI support.
 	// This step is not necessary unless you need WASI support.
@@ -173,7 +177,7 @@ Factorial::Run(int argc, char* argv[])
 	// Function name.
 	WasmEdge_String FuncName = WasmEdge_StringCreateByCString("factorial");
 	// Run the WASM function from file.
-	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, file_path, FuncName, Params, 1, Returns, 1);
+	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, app_path, FuncName, Params, 1, Returns, 1);
 
 	if (WasmEdge_ResultOK(Res)) {
 		printf("Factorial of %d is: %d\n", param1, WasmEdge_ValueGetI32(Returns[0]));
@@ -212,7 +216,7 @@ Fibonaci::Run(int argc, char* argv[])
 	// Extract the arguements.
 	char app_path[strlen(argv[0])];
 	strcpy(app_path, argv[0]);
-	int param1 = stoi(argv[1]);
+	int param1 = atoi(argv[1]);
 
 	// Create the configure context and add the WASI support.
 	// This step is not necessary unless you need WASI support.
@@ -227,7 +231,7 @@ Fibonaci::Run(int argc, char* argv[])
 	// Function name.
 	WasmEdge_String FuncName = WasmEdge_StringCreateByCString("fib");
 	// Run the WASM function from file.
-	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, file_path, FuncName, Params, 1, Returns, 1);
+	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, app_path, FuncName, Params, 1, Returns, 1);
 
 	if (WasmEdge_ResultOK(Res)) {
 		printf("%dth fiboncai number is: %d\n", param1, WasmEdge_ValueGetI32(Returns[0]));
