@@ -16,13 +16,6 @@
 #define	StringEquals(a, b)	(strcmp((a), (b)) == 0)
 
 
-// an enum for success or failure of methods in shell
-enum status_t {
-	APP_SUCCESS,
-	APP_FAIL,
-};
-
-
 void _ArgumentFormat() {
 	printf("./shell [version] [run] [wasm path] [arguments]\n");
 	printf("Supported wasm applications are : add.wasm | factorial.wasm
@@ -42,7 +35,7 @@ int main (int argc, char* argv[]) {
 
 	// if there is only one argument that must be "version"
 	// else return failure
-	if (argc == 1) {
+	if (argc == 2) {
 		if (StringEquals(argv[1], "version") || StringEquals(argv[1], "Version")) {
 			printf("WasmEdge version: %s\n", WasmEdge_VersionGet());
 			return EXIT_SUCCESS;
@@ -68,16 +61,18 @@ int main (int argc, char* argv[]) {
 	}
 
 	// Create a WasmApp instance which could be any supported Wasm Application
-	WasmApp* app = WasmApp::Create(&argv[index]);
+	WasmApp* app = WasmApp::Create(argv[index]);
 
 	// Something wrong happend instance is not created
 	if (app == NULL) {
-		fprintf(stderr, "Invalid arguments");
+		fprintf(stderr, "Invalid or Unsupported Wasm Application");
 		_ArgumentFormat();
 		return EXIT_FAILURE;
 	}
 
-	status_t status = app->Run();
+	status_t status = app->Run(argc - index, &argv[index]);
+
+	delete app;
 
 	if (status != APP_SUCCESS) {
 		fprintf(stderr, "Invalid arguments");
