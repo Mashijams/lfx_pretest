@@ -3,10 +3,10 @@ shell: shell.o wasmapp.o
 	$(info Successfully compiled tool)
 	$(info To use it run : ./shell [version] [run] [wasm path] [arguments])
 
-shell.o: WasmApp.h
+shell.o: WasmApp.h shell.cpp
 	g++ -c shell.cpp
 
-wasmapp.o: WasmApp.h
+wasmapp.o: WasmApp.h WasmApp.cpp
 	g++ -c WasmApp.cpp
 
 clean:

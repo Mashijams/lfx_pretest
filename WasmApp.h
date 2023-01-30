@@ -37,6 +37,10 @@ void
 _setup_app_hash_map();
 
 
+bool
+_numeric_check(char* s);
+
+
 // An abstract class which will refer to instance of any supported wasm application
 class WasmApp {
 public:

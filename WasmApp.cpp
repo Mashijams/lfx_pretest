@@ -18,8 +18,20 @@ void
 _setup_app_hash_map()
 {
 	app_hash["add"]         =   ADD;
-	app_hash["fibonaci"]    =   fIBONACI;
+	app_hash["fibonacci"]   =   fIBONACI;
 	app_hash["factorial"]   =   FACTORIAL;
+}
+
+
+bool
+_numeric_check(char* s)
+{
+	int len = strlen(s);
+	for (int i = 0; i < len; i++) {
+		if (!isdigit(s[i]))
+			return false;
+	}
+	return true;
 }
 
 
@@ -31,7 +43,7 @@ WasmApp::~WasmApp()
 WasmApp*
 WasmApp::Create(char* argv)
 {
-	uint32_t len = sizeof(argv);
+	uint32_t len = strlen(argv);
 	std::string str = ""; // empty string
 	int i;
 
@@ -100,13 +112,27 @@ Add::Run(int argc, char* argv[])
 {
 	if (argc < 3 || argc > 3) {
 		fprintf(stderr, "Invalid add application arguments\n");
-		fprintf(stderr, "Example command : ./shell run add.wasm 5 7");
+		fprintf(stderr, "Example command : ./shell run add.wasm 5 7\n");
 		return APP_FAIL;
 	}
 
 	// Extract the arguements.
 	char app_path[strlen(argv[0])];
 	strcpy(app_path, argv[0]);
+
+	// first check if argv[1] & argv[2] is numeric or not
+	if (!_numeric_check(argv[1])) {
+		fprintf(stderr, "Invalid add application arguments\n");
+		fprintf(stderr, "Example command : ./shell run add.wasm 5 7\n");
+		return APP_FAIL;
+	}
+	if (!_numeric_check(argv[2])) {
+		fprintf(stderr, "Invalid add application arguments\n");
+		fprintf(stderr, "Example command : ./shell run add.wasm 5 7\n");
+		return APP_FAIL;
+	}
+
+	// we can now safely use atoi function
 	int param1 = atoi(argv[1]);
 	int param2 = atoi(argv[2]);
 
@@ -155,13 +181,20 @@ Factorial::Run(int argc, char* argv[])
 {
 	if (argc < 2 || argc > 2) {
 		fprintf(stderr, "Invalid factorial application arguments\n");
-		fprintf(stderr, "Example command : ./shell run factorial.wasm 5");
+		fprintf(stderr, "Example command : ./shell run factorial.wasm 5\n");
 		return APP_FAIL;
 	}
 
 	// Extract the arguements.
 	char app_path[strlen(argv[0])];
 	strcpy(app_path, argv[0]);
+
+	// first check if argv[1] is numeric or not
+	if (!_numeric_check(argv[1])) {
+		fprintf(stderr, "Invalid factorial application arguments\n");
+		fprintf(stderr, "Example command : ./shell run factorial.wasm 5\n");
+		return APP_FAIL;
+	}
 	int param1 = atoi(argv[1]);
 
 	// Create the configure context and add the WASI support.
@@ -175,7 +208,7 @@ Factorial::Run(int argc, char* argv[])
 	WasmEdge_Value Params[1] = { WasmEdge_ValueGenI32(param1) };
 	WasmEdge_Value Returns[1];
 	// Function name.
-	WasmEdge_String FuncName = WasmEdge_StringCreateByCString("factorial");
+	WasmEdge_String FuncName = WasmEdge_StringCreateByCString("fac");
 	// Run the WASM function from file.
 	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, app_path, FuncName, Params, 1, Returns, 1);
 
@@ -209,13 +242,20 @@ Fibonaci::Run(int argc, char* argv[])
 {
 	if (argc < 2 || argc > 2) {
 		fprintf(stderr, "Invalid fibonaci application arguments\n");
-		fprintf(stderr, "Example command : ./shell run fibonaci.wasm 5");
+		fprintf(stderr, "Example command : ./shell run fibonacci.wasm 5\n");
 		return APP_FAIL;
 	}
 
 	// Extract the arguements.
 	char app_path[strlen(argv[0])];
 	strcpy(app_path, argv[0]);
+
+	// first check if argv[1] is numeric or not
+	if (!_numeric_check(argv[1])) {
+		fprintf(stderr, "Invalid fibonaci application arguments\n");
+		fprintf(stderr, "Example command : ./shell run fibonacci.wasm 5\n");
+		return APP_FAIL;
+	}
 	int param1 = atoi(argv[1]);
 
 	// Create the configure context and add the WASI support.
@@ -234,7 +274,7 @@ Fibonaci::Run(int argc, char* argv[])
 	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, app_path, FuncName, Params, 1, Returns, 1);
 
 	if (WasmEdge_ResultOK(Res)) {
-		printf("%dth fiboncai number is: %d\n", param1, WasmEdge_ValueGetI32(Returns[0]));
+		printf("%dth fibonacci number is: %d\n", param1, WasmEdge_ValueGetI32(Returns[0]));
     } else {
 		fprintf(stderr, "Error message: %s\n", WasmEdge_ResultGetMessage(Res));
 	}
