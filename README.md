@@ -12,15 +12,13 @@ Currently this tool supports add.wasm, fibonacci.wasm, factorial.wasm applicatio
 
 More support for different wasm application can be added on top of it.
 
-
 ## Building shell tool
 
 Clone this repository and run **make** command on source code directory.
 
 This will create executable named shell and available command info will be displayed in terminal.
 
-<img width="568" alt="Screenshot 2023-01-31 at 1 33 40 AM" src="https://user-images.githubusercontent.com/90818578/215585544-b908aaff-d3f3-4267-97b9-a947f7e23384.png">
-
+<img width="572" alt="Screenshot 2023-02-10 at 6 40 57 PM" src="https://user-images.githubusercontent.com/90818578/218100598-832d9d04-c6c1-477f-95e5-b4ffaa71502c.png">
 
 ## Test examples
 
@@ -42,22 +40,27 @@ This will create executable named shell and available command info will be displ
 
 #### commands
 ```
-./shell run add.wasm 5 7
-./shell run add.wasm 5
-./shell run add.wasm 5 7 3
-./shell run add.wasm a 7
-./shell run add.wasm a b
-./shell add.wasm 5 7
-./shell add.wasm 5
-./shell add.wasm 5 7 3
-./shell add.wasm a 7
-./shell add.wasm a b
-
+./shell run apps/add.wasm 5 7
+./shell run apps/add.wasm 5
+./shell run apps/add.wasm 5 7 3
+./shell run apps/add.wasm a 7
+./shell run apps/add.wasm a b
+./shell apps/add.wasm 5 7
+./shell apps/add.wasm 5
+./shell apps/add.wasm 5 7 3
+./shell apps/add.wasm a 7
+./shell apps/add.wasm a b
 ```
 
 #### output
 
-<img width="569" alt="Screenshot 2023-01-31 at 2 01 57 AM" src="https://user-images.githubusercontent.com/90818578/215588705-54d9d243-a361-40b2-8f97-0fd3b67062ec.png">
+#### with run
+
+<img width="570" alt="Screenshot 2023-02-10 at 6 30 24 PM" src="https://user-images.githubusercontent.com/90818578/218099013-f89ecaa9-ce81-4767-9047-2b713e5f0fd6.png">
+
+#### without run
+
+<img width="561" alt="Screenshot 2023-02-10 at 6 35 32 PM" src="https://user-images.githubusercontent.com/90818578/218099477-b8ec345b-17c2-4ac8-abfe-3aa969b4e1e1.png">
 
 ### fibonacci Tests
 
@@ -72,7 +75,7 @@ Similar tests like add.wasm could be run for fibonacci.wasm application
 
 #### output 
 
-<img width="572" alt="Screenshot 2023-01-31 at 2 09 59 AM" src="https://user-images.githubusercontent.com/90818578/215590247-87d9d94b-5c42-4cbb-b8d7-6af648e4581a.png">
+<img width="569" alt="Screenshot 2023-02-10 at 6 39 23 PM" src="https://user-images.githubusercontent.com/90818578/218100179-19ce27e6-25de-4e50-a9c1-85703015695a.png">
 
 ### More Tests
 
