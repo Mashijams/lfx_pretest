@@ -99,6 +99,8 @@ WasmApp::Create(char* argv)
 
 Add::Add()
 {
+	fParamlen	=	2;
+	fReturnlen	=	1;
 }
 
 
@@ -110,7 +112,7 @@ Add::~Add()
 status_t
 Add::Run(int argc, char* argv[])
 {
-	if (argc < 3 || argc > 3) {
+	if (argc - 1 < fParamlen || argc - 1 > fParamlen) {
 		fprintf(stderr, "Invalid add application arguments\n");
 		fprintf(stderr, "Example command : ./shell run add.wasm 5 7\n");
 		return APP_FAIL;
@@ -132,9 +134,22 @@ Add::Run(int argc, char* argv[])
 		return APP_FAIL;
 	}
 
-	// we can now safely use atoi function
-	int param1 = atoi(argv[1]);
-	int param2 = atoi(argv[2]);
+	// we can now safely use stoi function
+	int param1;
+	int param2;
+
+	try
+	{
+		std::string s = argv[1];
+		param1 = stoi(s);
+		s = argv[2];
+		param2 = stoi(s);
+	}
+	catch (const std::out_of_range& oor) {
+		fprintf(stderr, "Out of Range error: %s\n", oor.what());
+		fprintf(stderr, "Arguments and return value greater than INT32 is not supported\n");
+		return APP_FAIL;
+  	}
 
 	// Create the configure context and add the WASI support.
 	// This step is not necessary unless you need WASI support.
@@ -149,7 +164,8 @@ Add::Run(int argc, char* argv[])
 	// Function name.
 	WasmEdge_String FuncName = WasmEdge_StringCreateByCString("add");
 	// Run the WASM function from file.
-	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, app_path, FuncName, Params, 2, Returns, 1);
+	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, app_path, FuncName, Params,
+		fParamlen, Returns, fReturnlen);
 
 	if (WasmEdge_ResultOK(Res)) {
 		printf("Addition of %d and %d is: %d\n", param1, param2, WasmEdge_ValueGetI32(Returns[0]));
@@ -168,6 +184,8 @@ Add::Run(int argc, char* argv[])
 
 Factorial::Factorial()
 {
+	fParamlen	=	1;
+	fReturnlen	=	1;
 }
 
 
@@ -179,7 +197,7 @@ Factorial::~Factorial()
 status_t
 Factorial::Run(int argc, char* argv[])
 {
-	if (argc < 2 || argc > 2) {
+	if (argc - 1 < fParamlen || argc - 1 > fParamlen) {
 		fprintf(stderr, "Invalid factorial application arguments\n");
 		fprintf(stderr, "Example command : ./shell run factorial.wasm 5\n");
 		return APP_FAIL;
@@ -197,6 +215,11 @@ Factorial::Run(int argc, char* argv[])
 	}
 	int param1 = atoi(argv[1]);
 
+	if (param1 > 12) {
+		fprintf(stderr, "Arguments and return value greater than INT32 is not supported\n");
+		return APP_FAIL;
+	}
+
 	// Create the configure context and add the WASI support.
 	// This step is not necessary unless you need WASI support.
 	WasmEdge_ConfigureContext *ConfCxt = WasmEdge_ConfigureCreate();
@@ -210,7 +233,8 @@ Factorial::Run(int argc, char* argv[])
 	// Function name.
 	WasmEdge_String FuncName = WasmEdge_StringCreateByCString("fac");
 	// Run the WASM function from file.
-	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, app_path, FuncName, Params, 1, Returns, 1);
+	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, app_path, FuncName,
+		Params, fParamlen, Returns, fReturnlen);
 
 	if (WasmEdge_ResultOK(Res)) {
 		printf("Factorial of %d is: %d\n", param1, WasmEdge_ValueGetI32(Returns[0]));
@@ -229,6 +253,8 @@ Factorial::Run(int argc, char* argv[])
 
 Fibonaci::Fibonaci()
 {
+	fParamlen	=	1;
+	fReturnlen	=	1;
 }
 
 
@@ -240,7 +266,7 @@ Fibonaci::~Fibonaci()
 status_t
 Fibonaci::Run(int argc, char* argv[])
 {
-	if (argc < 2 || argc > 2) {
+	if (argc - 1 < fParamlen || argc - 1 > fParamlen) {
 		fprintf(stderr, "Invalid fibonaci application arguments\n");
 		fprintf(stderr, "Example command : ./shell run fibonacci.wasm 5\n");
 		return APP_FAIL;
@@ -258,6 +284,11 @@ Fibonaci::Run(int argc, char* argv[])
 	}
 	int param1 = atoi(argv[1]);
 
+	if (param1 > 46) {
+		fprintf(stderr, "Arguments and return value greater than INT32 is not supported\n");
+		return APP_FAIL;
+	}
+
 	// Create the configure context and add the WASI support.
 	// This step is not necessary unless you need WASI support.
 	WasmEdge_ConfigureContext *ConfCxt = WasmEdge_ConfigureCreate();
@@ -271,7 +302,8 @@ Fibonaci::Run(int argc, char* argv[])
 	// Function name.
 	WasmEdge_String FuncName = WasmEdge_StringCreateByCString("fib");
 	// Run the WASM function from file.
-	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, app_path, FuncName, Params, 1, Returns, 1);
+	WasmEdge_Result Res = WasmEdge_VMRunWasmFromFile(VMCxt, app_path, FuncName,
+		Params, fParamlen, Returns, fReturnlen);
 
 	if (WasmEdge_ResultOK(Res)) {
 		printf("%dth fibonacci number is: %d\n", param1, WasmEdge_ValueGetI32(Returns[0]));

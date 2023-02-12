@@ -8,7 +8,7 @@ The implementation is done with object oriented programming so any new wasm appl
 
 This tool (named shell) handles all sorts of arguments user can pass, so access to wasmedge C api calls are made after analyzing command written by user and indicating errors if any rule is violated.
 
-Currently this tool supports add.wasm, fibonacci.wasm, factorial.wasm applications.
+Currently this tool supports add.wasm, fibonacci.wasm, factorial.wasm applications in INT32 type arguments and return values.
 
 More support for different wasm application can be added on top of it.
 
@@ -27,8 +27,8 @@ This will create executable named shell and available command info will be displ
 #### commands
 ```
 ./shell version
-./shell version run 
-./shell version a b 
+./shell version run
+./shell version a b
 ./shell version a b c
 ```
 
@@ -73,7 +73,7 @@ Similar tests like add.wasm could be run for fibonacci.wasm application
 
 ```
 
-#### output 
+#### output
 
 <img width="569" alt="Screenshot 2023-02-10 at 6 39 23 PM" src="https://user-images.githubusercontent.com/90818578/218100179-19ce27e6-25de-4e50-a9c1-85703015695a.png">
 

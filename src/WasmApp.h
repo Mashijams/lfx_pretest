@@ -56,6 +56,9 @@ public:
 							Add();
 							~Add();
 		status_t			Run(int argc, char* argv[]);
+private:
+		uint8_t				fParamlen;
+		uint8_t				fReturnlen;
 };
 
 
@@ -65,6 +68,9 @@ public:
 							Fibonaci();
 							~Fibonaci();
 		status_t			Run(int argc, char* argv[]);
+private:
+		uint8_t				fParamlen;
+		uint8_t				fReturnlen;
 };
 
 
@@ -74,6 +80,9 @@ public:
 							Factorial();
 							~Factorial();
 		status_t			Run(int argc, char* argv[]);
+private:
+		uint8_t				fParamlen;
+		uint8_t				fReturnlen;
 };
 
 #endif
