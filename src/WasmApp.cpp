@@ -51,7 +51,7 @@ WasmApp::Create(char* argv)
 	for (i = len - 1; i >= len - 5; i--) {
 		str += argv[i];
 	}
-	reverse(str.begin(), str.end());
+	std::reverse(str.begin(), str.end());
 	if (str != ".wasm")
 		return NULL;
 
@@ -62,7 +62,7 @@ WasmApp::Create(char* argv)
     	str += argv[i];
     	i--;
 	}
-	reverse(str.begin(), str.end());
+	std::reverse(str.begin(), str.end());
 
 	Apps c;
 

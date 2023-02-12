@@ -12,6 +12,8 @@
 
 
 #include <wasmedge/wasmedge.h>
+#include <algorithm>
+#include <cstring>
 #include <iostream>
 #include <string>
 #include <map>

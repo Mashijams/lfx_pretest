@@ -8,6 +8,7 @@
 
 
 #include <wasmedge/wasmedge.h>
+#include <cstring>
 #include <iostream>
 #include <string>
 #include "WasmApp.h"
